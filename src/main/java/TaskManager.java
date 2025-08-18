@@ -2,30 +2,35 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TaskManager {
-    private static int idCounter = 0;
+    private static int idCounter = 1;
     Map<Integer, Task> taskMap = new HashMap<>();
     public void getAllTasks(){
         for(Map.Entry<Integer,Task> task: taskMap.entrySet()){
-            System.out.printf("task %s; name = %s \n",task.getValue().getId(),task.getValue().getName() );
+            System.out.println(task.getValue());
         }
     }
-    
 
-    public void deleteAllTasks(){
+
+    public void deleteAllTasks() {
         taskMap.clear();
     }
-    public Task getTaskById(int id){
+
+    public Task getTaskById(int id) {
         return taskMap.get(id);
     }
-    public void createTask(Task task){
+
+    public void createTask(Task task) {
+        task.setId(idCounter++);
         taskMap.put(task.getId(),task);
     }
-    public void updateTask(int id, Task task){
+    public void updateTask(int id, Task task) {
         taskMap.put(id, task);
     }
-    public void deleteTask(int id){
+
+    public void deleteTask(int id) {
         taskMap.remove(id);
     }
-    public void getAllSubTasks(int id){
+
+    public void getAllSubTasks(int id) {
     }
 }

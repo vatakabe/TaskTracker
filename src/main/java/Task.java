@@ -6,8 +6,10 @@ public class Task {
     private String description;
     private Status status;
 
-    public Task(int id, String name, String description, Status status) {
-        this.id = id;
+    public Task() {
+
+    }
+    public Task(String name, String description, Status status) {
         this.name = name;
         this.description = description;
         this.status = status;
@@ -55,5 +57,10 @@ public class Task {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+    @Override
+    public String toString(){
+        return String.format("id = %s; name = %s",getId(),getName());
     }
 }
