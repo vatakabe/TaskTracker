@@ -61,6 +61,7 @@ public class Task {
 
     @Override
     public String toString(){
-        return String.format("id = %s; name = %s",getId(),getName());
+        return String.format("id = %s; name = %s; status = %s,type = %s",
+                getId(),getName(),getStatus(), getClass());
     }
 }

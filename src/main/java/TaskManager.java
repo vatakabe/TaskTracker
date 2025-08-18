@@ -22,8 +22,16 @@ public class TaskManager {
     public void createTask(Task task) {
         task.setId(idCounter++);
         taskMap.put(task.getId(),task);
+
+        if( task instanceof SubTask subTask){
+            Epic epic =  (Epic) taskMap.get( subTask.getEpicId() );
+            epic.addSubTask(subTask);
+        }
+
+
     }
     public void updateTask(int id, Task task) {
+
         taskMap.put(id, task);
     }
 
@@ -32,5 +40,10 @@ public class TaskManager {
     }
 
     public void getAllSubTasks(int id) {
+        Epic epic =(Epic) taskMap.get(id);
+        System.out.println(epic);
+        for( SubTask subTask: epic.getSubTaskList().values() ){
+            System.out.println(subTask);
+        }
     }
 }
