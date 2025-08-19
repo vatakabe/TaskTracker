@@ -10,7 +10,9 @@ public class TaskManager {
         }
     }
 
-
+    public static int getUnicalId(){
+        return idCounter++;
+    }
     public void deleteAllTasks() {
         taskMap.clear();
     }
@@ -20,19 +22,27 @@ public class TaskManager {
     }
 
     public void createTask(Task task) {
-        task.setId(idCounter++);
+        task.setId(getUnicalId());
         taskMap.put(task.getId(),task);
 
         if( task instanceof SubTask subTask){
-            Epic epic =  (Epic) taskMap.get( subTask.getEpicId() );
-            epic.addSubTask(subTask);
+            subTask.setCurrentEpic(subTask.getCurrentEpic());
         }
 
-
+    }
+    public void createTaskAuto(Task...tasks) {
+        for( Task task: tasks){
+            createTask(task);
+        }
     }
     public void updateTask(int id, Task task) {
-
-        taskMap.put(id, task);
+        Task updatingTask = taskMap.get(id);
+        if(updatingTask instanceof SubTask subTask){
+            subTask.update(task);
+        }
+        else{
+            task.update(task);
+        }
     }
 
     public void deleteTask(int id) {
