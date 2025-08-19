@@ -3,45 +3,57 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Epic extends Task{
-    private Map<Integer,SubTask> subTaskList = new HashMap<>();
+public class Epic extends Task {
+    private Map<Integer, SubTask> subTaskList = new HashMap<>();
     private List<Status> statusList = new ArrayList<>();
+
     public Epic(String name, String description) {
         super(name, description, Status.NEW);
     }
-    public void updateEpicTaskStatus(){
+
+    public void updateEpicTaskStatus() {
         statusList.clear();
-        if( subTaskList.isEmpty()) {
+        if (subTaskList.isEmpty()) {
             super.setStatus(Status.NEW);
             return;
         }
-        for( SubTask subTask: subTaskList.values()){
-            statusList.add( subTask.getStatus() );
+        for (SubTask subTask : subTaskList.values()) {
+            statusList.add(subTask.getStatus());
         }
-        if( ( statusList.contains(Status.NEW) && statusList.contains(Status.DONE))
+        if ((statusList.contains(Status.NEW) && statusList.contains(Status.DONE))
                 || statusList.contains(Status.IN_PROGRESS)) {
             super.setStatus(Status.IN_PROGRESS);
-        }else if( statusList.contains(Status.DONE) ){
+        } else if (statusList.contains(Status.DONE)) {
             super.setStatus(Status.DONE);
-        }else{
+        } else {
             super.setStatus(Status.NEW);
         }
     }
 
-    public void addSubTask(Task task){
+    @Override
+    public void safetyRemove() {
+        Map<Integer, SubTask> CopySubTaskList = subTaskList;
+        for (SubTask subTask : CopySubTaskList.values()) {
+            subTask.safetyRemove();
+        }
+        updateEpicTaskStatus();
+    }
+
+    public void addSubTask(Task task) {
         subTaskList.put(task.getId(), (SubTask) task);
         updateEpicTaskStatus();
     }
-    public void deleteSubTask(Task task){
+
+    public void deleteSubTask(Task task) {
         subTaskList.remove(task.getId());
         updateEpicTaskStatus();
     }
 
-    public Map<Integer,SubTask> getSubTaskList() {
+    public Map<Integer, SubTask> getSubTaskList() {
         return subTaskList;
     }
 
-    public void setSubTaskList(Map<Integer,SubTask> subTaskList) {
+    public void setSubTaskList(Map<Integer, SubTask> subTaskList) {
         this.subTaskList = subTaskList;
     }
 }

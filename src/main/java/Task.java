@@ -19,6 +19,9 @@ public class Task {
         this.description = task.description;
         this.status = task.status;
     }
+    public void safetyRemove(){
+        return;
+    }
     public int getId() {
         return id;
     }
