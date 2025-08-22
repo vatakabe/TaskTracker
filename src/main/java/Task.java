@@ -1,7 +1,7 @@
 import java.util.Objects;
 
 public class Task {
-    private int id;
+    private Integer id;
     private String name;
     private String description;
     private Status status;
@@ -14,15 +14,13 @@ public class Task {
         this.description = description;
         this.status = status;
     }
-    public void update(Task task){
-        this.name = task.name;
-        this.description = task.description;
-        this.status = task.status;
+    public Task(int id, String name, String description, Status status){
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.status = status;
     }
-    public void safetyRemove(){
-        return;
-    }
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

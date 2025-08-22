@@ -1,38 +1,20 @@
 
 public class SubTask extends Task {
 
-    private Epic currentEpic;
 
+    private Integer epicId;
     public SubTask(String name, String description, Status status, Epic epic) {
         super(name, description, status);
-        currentEpic = epic;
+        epicId = epic.getId();
     }
-
-    @Override
-    public void update(Task task) {
-        SubTask subTask = (SubTask) task;
-        super.update(task);
-        setCurrentEpic(subTask.getCurrentEpic());
+    public SubTask(int id,String name, String description, Status status, Epic epic) {
+        super(id,name, description, status);
+        epicId = epic.getId();
     }
-
-    public void setCurrentEpic(Epic epic) {
-        if (currentEpic == null) {
-            currentEpic = epic;
-            currentEpic.addSubTask(this);
-        } else {
-            currentEpic.deleteSubTask(this);
-            currentEpic = epic;
-            currentEpic.addSubTask(this);
-        }
+    public void setEpicId(Integer epicId){
+        this.epicId = epicId;
     }
-
-    @Override
-    public void safetyRemove() {
-        currentEpic.deleteSubTask(this);
-        currentEpic = null;
-    }
-
-    public Epic getCurrentEpic() {
-        return currentEpic;
+    public Integer getEpicId(){
+        return epicId;
     }
 }
