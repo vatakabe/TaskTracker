@@ -2,7 +2,21 @@ import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager{
     private static Integer idCounter = 1;
+    private HistoryManager historyManager;
     Map<Integer, Task> taskMap = new HashMap<>();
+
+    public InMemoryTaskManager(){
+        historyManager = Managers.getDefaultHistory();
+    }
+
+    public void setHistoryManager(HistoryManager historyManager) {
+        this.historyManager = historyManager;
+    }
+
+    @Override
+    public HistoryManager getHistoryManager() {
+        return historyManager;
+    }
 
     @Override
     public void getAllTasks() {
@@ -12,7 +26,47 @@ public class InMemoryTaskManager implements TaskManager{
         }
     }
 
-    public static Integer generateUnicalId() {
+    @Override
+    public Task getTask(int id) {
+        if(!taskMap.containsKey(id)){
+            System.out.println("Задачи с таким id не существует!");
+            throw new IllegalArgumentException();
+        }
+        historyManager.add(taskMap.get(id));
+        return taskMap.get(id);
+    }
+
+    @Override
+    public Epic getEpic(int id) {
+        if(!taskMap.containsKey(id)){
+            System.out.println("Задачи с таким id не существует!");
+            throw new IllegalArgumentException();
+        }
+        if(taskMap.get(id) instanceof Epic epic){
+            historyManager.add(taskMap.get(id));
+            return epic;
+        }else{
+            System.out.println("переданный id ссылается не на эпик!");
+            throw new IllegalStateException();
+        }
+    }
+
+    @Override
+    public SubTask getSubTask(int id) {
+        if(!taskMap.containsKey(id)){
+            System.out.println("Задачи с таким id не существует!");
+            throw new IllegalArgumentException();
+        }
+        if(taskMap.get(id) instanceof SubTask subTask){
+            historyManager.add(taskMap.get(id));
+            return subTask;
+        }else{
+            System.out.println("переданный id ссылается не на подзадачу!");
+            throw new IllegalStateException();
+        }
+    }
+
+    private static Integer generateUnicalId() {
         return idCounter++;
     }
     @Override
@@ -118,7 +172,7 @@ public class InMemoryTaskManager implements TaskManager{
         }
     }
 
-    public void updateEpicTaskStatus(Epic epic) {
+    private void updateEpicTaskStatus(Epic epic) {
         Map<Status,Integer> statusCounter = new HashMap<>();
         List<SubTask> subTasks = getAllSubTasksById(epic.getId());
         int allSubtasksCount = 0;
@@ -138,6 +192,11 @@ public class InMemoryTaskManager implements TaskManager{
     }
     @Override
     public List<SubTask> getAllSubTasksById(int id) {
+        if(!(taskMap.get(id) instanceof Epic)){
+            System.out.println("переданный id задачи указывает не на эпик!");
+            throw new IllegalArgumentException();
+        }
+
         List<SubTask> result = new ArrayList<>();
         for( Task task: taskMap.values() ){
             if ( task instanceof SubTask subTask){

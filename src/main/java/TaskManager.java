@@ -1,7 +1,11 @@
 import java.util.*;
 
 public interface TaskManager {
+    HistoryManager getHistoryManager();
     void getAllTasks();
+    Task getTask(int id);
+    Epic getEpic(int id);
+    SubTask getSubTask(int id);
 
     void deleteAllTasks();
 
@@ -14,4 +18,5 @@ public interface TaskManager {
     void removeTaskById(int id);
 
     List<SubTask> getAllSubTasksById(int id);
+
 }

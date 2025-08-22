@@ -1,9 +1,21 @@
 public class App {
     public static void main(String[] args) {
 
+
         TaskManager inMemoryTaskManager = Managers.getDefault();
+        HistoryManager historyManager = inMemoryTaskManager.getHistoryManager();
         Task task1 = new Task("task1", "Первая простая задача", Status.NEW);
         int task1Id = inMemoryTaskManager.createTask(task1);
+        Task task2 = new Task("task2", "Первая простая задача", Status.NEW);
+        int task2Id = inMemoryTaskManager.createTask(task2);
+        Task task3 = new Task("task3", "Первая простая задача", Status.NEW);
+        int task3Id = inMemoryTaskManager.createTask(task3);
+        Task task4 = new Task("task4", "Первая простая задача", Status.NEW);
+        int task4Id = inMemoryTaskManager.createTask(task4);
+        Task task5 = new Task("task5", "Первая простая задача", Status.NEW);
+        int task5Id = inMemoryTaskManager.createTask(task5);
+        Task task6 = new Task("task6", "Первая простая задача", Status.NEW);
+        int task6Id = inMemoryTaskManager.createTask(task6);
 
         Epic epic1 = new Epic("epic1","epic1");
         int epic1Id = inMemoryTaskManager.createTask(epic1);
@@ -16,14 +28,15 @@ public class App {
         int subtask2Id = inMemoryTaskManager.createTask(subtask2);
         SubTask subtask3 = new SubTask("subtask2","subtask3", Status.NEW, epic1);
         int subtask3Id = inMemoryTaskManager.createTask(subtask3);
-        inMemoryTaskManager.getAllTasks();
-
+        //inMemoryTaskManager.getAllTasks();
         SubTask updateTask1 = new SubTask(subtask1Id,"upd subtask1","subtask1", Status.IN_PROGRESS, epic2);
-        inMemoryTaskManager.updateTask(updateTask1);
-        inMemoryTaskManager.getAllTasks();
-        inMemoryTaskManager.removeTaskById(subtask1Id);
-        inMemoryTaskManager.getAllTasks();
-        inMemoryTaskManager.removeTaskById(epic1Id);
-        inMemoryTaskManager.getAllTasks();
+
+        for(int i = 0; i < 10 ; i++){
+            inMemoryTaskManager.getTask(task1Id);
+        }
+        inMemoryTaskManager.getEpic(epic1Id);
+        inMemoryTaskManager.getEpic(epic2Id);
+        inMemoryTaskManager.getEpic(epic1Id);
+        historyManager.getHistory().forEach(System.out::println);
     }
 }
