@@ -6,23 +6,22 @@ import App.History.*;
 import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
-    private static Integer idCounter = 1;
+    private static Integer idCounter;
     private HistoryManager historyManager;
-    Map<Integer, Task> taskMap = new HashMap<>();
-
+    Map<Integer, Task> taskMap;
+    static{
+        idCounter = 1;
+    }
+    {
+        taskMap = new HashMap<>();
+    }
     public InMemoryTaskManager(){
         historyManager = Managers.getDefaultHistory();
     }
 
-    public void setHistoryManager(HistoryManager historyManager) {
-        this.historyManager = historyManager;
+    public void getHistory(){
+        historyManager.getHistory().forEach(System.out::println);
     }
-
-    @Override
-    public HistoryManager getHistoryManager() {
-        return historyManager;
-    }
-
     @Override
     public void getAllTasks() {
         System.out.println("-------------");

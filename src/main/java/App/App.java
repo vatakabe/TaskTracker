@@ -8,7 +8,6 @@ public class App {
 
 
         TaskManager inMemoryTaskManager = Managers.getDefault();
-        HistoryManager historyManager = inMemoryTaskManager.getHistoryManager();
         Task task1 = new Task("task1", "Первая простая задача", Status.NEW);
         int task1Id = inMemoryTaskManager.createTask(task1);
         Task task2 = new Task("task2", "Первая простая задача", Status.NEW);
@@ -33,15 +32,9 @@ public class App {
         int subtask2Id = inMemoryTaskManager.createTask(subtask2);
         SubTask subtask3 = new SubTask("subtask2","subtask3", Status.NEW, epic1);
         int subtask3Id = inMemoryTaskManager.createTask(subtask3);
-        //inMemoryTaskManager.getAllTasks();
         SubTask updateTask1 = new SubTask(subtask1Id,"upd subtask1","subtask1", Status.IN_PROGRESS, epic2);
-
-        for(int i = 0; i < 10 ; i++){
-            inMemoryTaskManager.getTask(task1Id);
-        }
-        inMemoryTaskManager.getEpic(epic1Id);
-        inMemoryTaskManager.getEpic(epic2Id);
-        inMemoryTaskManager.getEpic(epic1Id);
-        historyManager.getHistory().forEach(System.out::println);
+        inMemoryTaskManager.updateTask(updateTask1);
+        inMemoryTaskManager.getTask(subtask1Id);
+        inMemoryTaskManager.getHistory();
     }
 }
