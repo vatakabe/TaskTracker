@@ -1,3 +1,8 @@
+package App;
+
+import App.History.*;
+import App.Tasks.*;
+
 public class Managers {
 
     public static TaskManager getDefault(){

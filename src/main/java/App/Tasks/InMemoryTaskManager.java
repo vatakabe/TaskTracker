@@ -1,6 +1,11 @@
+package App.Tasks;
+
+import App.*;
+import App.History.HistoryManager;
+import App.History.*;
 import java.util.*;
 
-public class InMemoryTaskManager implements TaskManager{
+public class InMemoryTaskManager implements TaskManager {
     private static Integer idCounter = 1;
     private HistoryManager historyManager;
     Map<Integer, Task> taskMap = new HashMap<>();

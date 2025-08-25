@@ -1,7 +1,9 @@
+package App.Tasks;
+
+import App.Status;
+import App.History.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Epic extends Task {
     private List<Integer> subTasksIds = new ArrayList<>();

@@ -1,3 +1,7 @@
+package App.Tasks;
+
+import App.Status;
+import App.History.*;
 import java.util.Objects;
 
 public class Task {

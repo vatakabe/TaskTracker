@@ -1,3 +1,7 @@
+package App.Tasks;
+
+import App.History.HistoryManager;
+import App.History.*;
 import java.util.*;
 
 public interface TaskManager {

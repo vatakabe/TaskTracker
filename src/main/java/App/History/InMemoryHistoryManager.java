@@ -1,8 +1,11 @@
+package App.History;
+
+import App.Tasks.*;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class InMemoryHistoryManager implements HistoryManager{
+public class InMemoryHistoryManager implements HistoryManager {
     private List<Task>historyList = new ArrayList<>();
     private static final int HISTORY_MEMORY = 10;
     @Override
