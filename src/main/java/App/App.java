@@ -34,7 +34,12 @@ public class App {
         int subtask3Id = inMemoryTaskManager.createTask(subtask3);
         SubTask updateTask1 = new SubTask(subtask1Id,"upd subtask1","subtask1", Status.IN_PROGRESS, epic2);
         inMemoryTaskManager.updateTask(updateTask1);
-        inMemoryTaskManager.getTask(subtask1Id);
+        inMemoryTaskManager.getTask(subtask3Id);
+        inMemoryTaskManager.getTask(epic1Id);
+        inMemoryTaskManager.getHistory();
+        System.out.println("------------");
+        inMemoryTaskManager.removeTaskById(epic1Id);
+        System.out.println("------------");
         inMemoryTaskManager.getHistory();
     }
 }
