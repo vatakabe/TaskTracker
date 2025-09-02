@@ -36,9 +36,11 @@ public class App {
         inMemoryTaskManager.updateTask(updateTask1);
         inMemoryTaskManager.getTask(subtask3Id);
         inMemoryTaskManager.getTask(epic1Id);
+        inMemoryTaskManager.getTask(epic2Id);
         inMemoryTaskManager.getHistory();
         System.out.println("------------");
         inMemoryTaskManager.removeTaskById(epic1Id);
+        inMemoryTaskManager.removeTaskById(subtask1Id);
         System.out.println("------------");
         inMemoryTaskManager.getHistory();
     }

@@ -160,19 +160,24 @@ public class InMemoryTaskManager implements TaskManager {
                 Epic epic = (Epic) taskMap.get(epicId);
                 epic.getSubTasksIds().remove(subTask.getId());
                 taskMap.remove(subTask.getId());
+                historyManager.remove(subTask.getId());
                 updateEpicTaskStatus(epic);
             }else {
                 taskMap.remove(subTask.getId());
+                historyManager.remove(subTask.getId());
             }
         }else if(task instanceof Epic epic){
             System.out.println("дополнительно будут удалены все подзадачи эпика " + epic.getName());
             for(Integer removeSubTaskId: epic.getSubTasksIds()){
                 taskMap.remove(removeSubTaskId);
+                historyManager.remove(removeSubTaskId);
             }
             taskMap.remove(id);
+            historyManager.remove(id);
         }
         else{
             taskMap.remove(id);
+            historyManager.remove(id);
         }
     }
 

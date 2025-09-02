@@ -5,9 +5,7 @@ import App.Tasks.*;
 import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private List<Task>historyList = new ArrayList<>();
     private Map<Integer, HNode> historyMap = new HashMap<>();
-
     private HNode<Task> head;
     private HNode<Task> tail;
     private int size = 0;
@@ -21,11 +19,8 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void remove(int id) {
-        for(Task task: historyList){
-            if( task.getId().equals(id)){
-                historyList.remove(task);
-            }
-        }
+        HNode rNode= historyMap.get(id);
+        removeNode(rNode);
     }
     public HNode linkLast(Task task){
         final HNode<Task> oldTail = tail;
