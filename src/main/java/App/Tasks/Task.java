@@ -2,14 +2,20 @@ package App.Tasks;
 
 import App.Status;
 import App.History.*;
+import App.Types;
+
 import java.util.Objects;
 
 public class Task {
     private Integer id;
     private String name;
-    private String description;
     private Status status;
-
+    private String description;
+    private Types type;
+    {
+        String strType = this.getClass().getSimpleName();
+        type = Types.valueOf(strType.toUpperCase());
+    }
     public Task() {
 
     }
@@ -56,6 +62,10 @@ public class Task {
         this.status = status;
     }
 
+    public Types getType() {
+        return type;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -70,7 +80,10 @@ public class Task {
 
     @Override
     public String toString(){
-        return String.format("id = %s; name = %s; status = %s,type = %s",
-                getId(),getName(),getStatus(), getClass());
+        String result = String.format(
+                "%s,%s,%s,%s,%s,\n",
+                getId(),getType(),getName(),getStatus(),getDescription()
+        );
+        return result;
     }
 }

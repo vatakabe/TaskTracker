@@ -8,7 +8,7 @@ import java.util.*;
 public class InMemoryTaskManager implements TaskManager {
     private static Integer idCounter;
     private HistoryManager historyManager;
-    Map<Integer, Task> taskMap;
+    private Map<Integer, Task> taskMap;
     static{
         idCounter = 1;
     }
@@ -23,11 +23,9 @@ public class InMemoryTaskManager implements TaskManager {
         historyManager.getHistory().forEach(System.out::println);
     }
     @Override
-    public void getAllTasks() {
-        System.out.println("-------------");
-        for (Map.Entry<Integer, Task> task : taskMap.entrySet()) {
-            System.out.println(task.getValue());
-        }
+    public Map<Integer,Task> getAllTasks() {
+        Map<Integer,Task> result = new HashMap<>(taskMap);
+        return result;
     }
 
     @Override

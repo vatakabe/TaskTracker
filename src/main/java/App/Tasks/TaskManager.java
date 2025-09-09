@@ -6,7 +6,7 @@ import java.util.*;
 
 public interface TaskManager {
     void getHistory();
-    void getAllTasks();
+    Map<Integer,Task> getAllTasks();
     Task getTask(int id);
     Epic getEpic(int id);
     SubTask getSubTask(int id);
