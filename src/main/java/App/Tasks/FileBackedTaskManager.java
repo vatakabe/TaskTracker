@@ -1,5 +1,8 @@
 package App.Tasks;
 
+import App.Status;
+import App.Types;
+
 import java.io.*;
 import java.nio.file.Path;
 import java.util.Map;
@@ -23,7 +26,38 @@ public class FileBackedTaskManager extends InMemoryTaskManager{
             e.printStackTrace();
         }
     }
+    public void loadFromFile(){
 
+    }
+    private void createFromFile(String line) throws IOException{
+        String[] args = line.split(",");
+        Types taskType = Types.valueOf(args[2].toUpperCase());
+        //task parameters
+        int id = Integer.valueOf(args[0]);
+        String name = args[2];
+        Status status = Status.valueOf(args[3].toUpperCase());
+        String description = args[4];
+        int epicId = Integer.valueOf(args[5]);
+        switch (taskType){
+            case EPIC -> {
+                Epic epicTask = new Epic(id,name,description,status);
+                super.createTask(epicTask);
+            }
+            case SUBTASK -> {
+                Epic epic = (Epic) super.getAllTasks().get(epicId);
+                SubTask subTask = new SubTask(id,name,description,status,epic);
+                super.createTask(subTask);
+            }
+            case TASK -> {
+                Task task = new Task(id,name,description,status);
+                super.createTask(task);
+            }
+            default -> {
+                throw new IOException("Задача из файла не подходит");
+            }
+        }
+
+    }
     @Override
     public int createTask(Task task) {
         int returnId =  super.createTask(task);
