@@ -6,6 +6,8 @@ import App.History.*;
 import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
+
+
     private static Integer idCounter;
     private HistoryManager historyManager;
     private Map<Integer, Task> taskMap;
@@ -24,10 +26,13 @@ public class InMemoryTaskManager implements TaskManager {
     }
     @Override
     public Map<Integer,Task> getAllTasks() {
-        Map<Integer,Task> result = new HashMap<>(taskMap);
-        return result;
+        //Map<Integer,Task> result = new HashMap<>(taskMap);
+        return taskMap;
     }
 
+    public static void setIdCounter(Integer idCounter) {
+        InMemoryTaskManager.idCounter = idCounter;
+    }
     @Override
     public Task getTask(int id) {
         if(!taskMap.containsKey(id)){
@@ -179,7 +184,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    private void updateEpicTaskStatus(Epic epic) {
+    public void updateEpicTaskStatus(Epic epic) {
         Map<Status,Integer> statusCounter = new HashMap<>();
         List<SubTask> subTasks = getAllSubTasksById(epic.getId());
         int allSubtasksCount = 0;
