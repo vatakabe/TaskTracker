@@ -5,7 +5,7 @@ import App.History.*;
 import java.util.*;
 
 public interface TaskManager {
-    void getHistory();
+    List<Task> getHistory();
     Map<Integer,Task> getAllTasks();
     Task getTask(int id);
     Epic getEpic(int id);

@@ -1,14 +1,13 @@
 package App.Tasks;
 
+import App.History.HistoryManager;
 import App.Status;
 import App.Types;
 
+import javax.sound.midi.Soundbank;
 import java.io.*;
 import java.nio.file.Path;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeSet;
+import java.util.*;
 
 public class FileBackedTaskManager extends InMemoryTaskManager{
     private final String filePath;
@@ -17,7 +16,24 @@ public class FileBackedTaskManager extends InMemoryTaskManager{
         super();
         this.filePath = strPath;
         loadFromFile();
+        //loadHistoryFromFile();
     }
+
+    private void loadHistoryFromFile() {
+        try( BufferedReader br = new BufferedReader(new FileReader(filePath)) ){
+            while(br.ready()){
+                String line = br.readLine();
+                if( line.equals("#History")){
+
+                }
+            }
+            updateEpics();
+            updateIdCounter();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
     public void save(){
         Map<Integer,Task> saveTaskMap = super.getAllTasks();
         try(BufferedWriter bos = new BufferedWriter(new FileWriter(filePath,false))){
@@ -26,20 +42,62 @@ public class FileBackedTaskManager extends InMemoryTaskManager{
             for(Task task: saveTaskMap.values()){
                 bos.write(task.toString());
             }
+
+            List<Task> history =super.getHistory();
+            if(!history.isEmpty()){
+                bos.write("#history\n");
+                StringBuilder sb = new StringBuilder();
+                for(Task value: history){
+                    sb.append(value.getId()+",");
+                }
+                if (sb.length() > 0) {
+                    sb.setLength(sb.length() - 1);
+                }
+                bos.write(sb.toString());
+                bos.newLine();
+            }
         }catch(IOException e){
             e.printStackTrace();
         }
     }
     public void loadFromFile(){
         try( BufferedReader br = new BufferedReader(new FileReader(filePath)) ){
-            br.readLine();
+            String header = br.readLine();
+            if(header == null){
+                System.out.println("file is empty");
+                return;
+            }
             while(br.ready()){
                 String line = br.readLine();
-                Task task = fromString(line);
-                getAllTasks().put(task.getId(), task);
+                if(line.equalsIgnoreCase("#history")) break;
+                try{
+                    Task task = fromString(line);
+                    getAllTasks().put(task.getId(), task);
+                }
+                catch(RuntimeException e){
+                    break;
+                }
             }
             updateEpics();
             updateIdCounter();
+
+            String historyLine = br.readLine();
+            if(historyLine !=null && !historyLine.trim().isEmpty()){
+                String[] history = historyLine.split(",");
+                HistoryManager historyManager = getHistoryManager();
+                Map<Integer, Task> taskMap = getAllTasks();
+                for(String taskId: history){
+                    try{
+                        Task task = taskMap.get(Integer.parseInt(taskId));
+                        if(task != null){
+                            historyManager.add(task);
+                        }
+                    }
+                    catch( NumberFormatException e){
+                        System.out.println("Некорректный id истории");
+                    }
+                }
+            }
         }catch(IOException e){
             e.printStackTrace();
         }

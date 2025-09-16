@@ -5,7 +5,7 @@ import App.Tasks.*;
 import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private Map<Integer, HNode> historyMap = new HashMap<>();
+    protected Map<Integer, HNode> historyMap = new HashMap<>();
     private HNode<Task> head;
     private HNode<Task> tail;
     private int size = 0;
@@ -33,7 +33,6 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
         return result;
     }
-
     public HNode linkLast(Task task){
         final HNode<Task> oldTail = tail;
         final HNode<Task> newHNode = new HNode<>(oldTail, task,  null);

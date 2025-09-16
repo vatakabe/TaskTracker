@@ -20,9 +20,11 @@ public class InMemoryTaskManager implements TaskManager {
     public InMemoryTaskManager(){
         historyManager = Managers.getDefaultHistory();
     }
-
-    public void getHistory(){
-        historyManager.getHistory().forEach(System.out::println);
+    public HistoryManager getHistoryManager(){
+        return historyManager;
+    }
+    public List<Task> getHistory(){
+        return historyManager.getHistory();
     }
     @Override
     public Map<Integer,Task> getAllTasks() {
