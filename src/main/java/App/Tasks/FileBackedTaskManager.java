@@ -1,6 +1,8 @@
 package App.Tasks;
 
 import App.History.HistoryManager;
+import App.ManagerLoadException;
+import App.ManagerSaveException;
 import App.Status;
 import App.Types;
 
@@ -16,15 +18,25 @@ public class FileBackedTaskManager extends InMemoryTaskManager{
         super();
         this.filePath = strPath;
         loadFromFile();
-        //loadHistoryFromFile();
+        loadHistoryFromFile();
     }
 
     private void loadHistoryFromFile() {
         try( BufferedReader br = new BufferedReader(new FileReader(filePath)) ){
             while(br.ready()){
                 String line = br.readLine();
-                if( line.equals("#History")){
-
+                if( line.equalsIgnoreCase("#History")){
+                    line = br.readLine();
+                    String[] taskIds = line.split(",");
+                    HistoryManager historyManager = getHistoryManager();
+                    for(String strTaskId: taskIds){
+                        try{
+                            Integer taskId = Integer.parseInt(strTaskId);
+                            historyManager.add(getAllTasks().get(taskId));
+                        }catch(NumberFormatException e){
+                            throw new ManagerLoadException("Отсутствует задача с таким id, для загрузки в историю");
+                        }
+                    }
                 }
             }
             updateEpics();
@@ -57,7 +69,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager{
                 bos.newLine();
             }
         }catch(IOException e){
-            e.printStackTrace();
+            throw new ManagerSaveException("ошибка сохранения результатов работы в файл");
         }
     }
     public void loadFromFile(){
@@ -134,7 +146,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager{
     }
     private void updateIdCounter() {
         Integer maxId = getAllTasks().keySet().stream().max(Comparator.comparingInt(o -> o)).get();
-        setIdCounter(maxId);
+        setIdCounter(++maxId);
     }
 
     private void updateEpics() {
